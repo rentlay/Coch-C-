@@ -16,7 +16,7 @@
             --accent: #3b82f6;
             --accent-bg: rgba(59, 130, 246, 0.1);
             --text-main: #e2e8f0;
-            --text-muted: #8b949e;
+            --text-muted: #94a3b8; /* Исправлен контраст текста */
             --code-keyword: #ff7b72;
             --code-string: #a5d6ff;
             --code-func: #d2a8ff;
@@ -43,7 +43,7 @@
             min-height: 100vh;
         }
 
-        /* Top Header Navigation style */
+        /* Top Header */
         .doc-header {
             display: flex;
             justify-content: space-between;
@@ -51,6 +51,7 @@
             border-bottom: 1px solid var(--border);
             padding-bottom: 12px;
             margin-bottom: 20px;
+            flex-shrink: 0;
         }
 
         .doc-title {
@@ -85,11 +86,16 @@
             color: #fff;
         }
 
-        /* Documentation Section Headers */
+        /* Content Wrapper */
+        .content-body {
+            flex: 1 0 auto;
+            padding-bottom: 24px;
+        }
+
         h1 {
             font-size: 20px;
             font-weight: 600;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             letter-spacing: -0.4px;
         }
 
@@ -100,7 +106,6 @@
             line-height: 1.6;
         }
 
-        /* Inline code snippets */
         code {
             font-family: 'JetBrains Mono', monospace;
             font-size: 12px;
@@ -141,12 +146,11 @@
             color: var(--text-main);
         }
 
-        /* Syntax Highlight emulation */
         .kw { color: var(--code-keyword); }
         .str { color: var(--code-string); }
         .fn { color: var(--code-func); }
 
-        /* Note Callout Block placed strictly between intro and options */
+        /* Note Callout Block */
         .note-box {
             background: var(--note-bg);
             border: 1px solid var(--note-border);
@@ -256,10 +260,11 @@
             color: var(--text-muted);
         }
 
-        /* Submit Button */
+        /* Submit Button Fixed at bottom */
         .action-container {
-            margin-top: auto;
+            flex-shrink: 0;
             padding-top: 10px;
+            padding-bottom: env(safe-area-inset-bottom, 10px);
         }
 
         .doc-btn {
@@ -293,67 +298,70 @@
         </div>
     </div>
 
-    <h1 id="main-heading">Настройка среды окружения</h1>
-    <p id="main-desc">Конфигурация модульных тестов и параметров сборки должна быть прописана в корневом файле <code>tests/test_main.cpp</code>.</p>
+    <div class="content-body">
+        <h1 id="main-heading">Настройка среды окружения</h1>
+        <p id="main-desc">Конфигурация модульных тестов и параметров сборки должна быть прописана в корневом файле <code>tests/test_main.cpp</code>.</p>
 
-    <!-- Кодовый блок -->
-    <div class="code-block-container">
-        <div class="code-block-header">
-            <span id="code-filename">tests/config.cpp</span>
-            <span>C++20</span>
-        </div>
-        <pre><code><span class="kw">namespace</span> CoreConfig {
+        <!-- Кодовый блок -->
+        <div class="code-block-container">
+            <div class="code-block-header">
+                <span id="code-filename">tests/config.cpp</span>
+                <span>C++20</span>
+            </div>
+            <pre><code><span class="kw">namespace</span> CoreConfig {
     <span class="fn">SETUP_PROTOCOL</span>(<span class="str">"[System] Initialized"</span>);
 }</code></pre>
-    </div>
+        </div>
 
-    <!-- Информационная плашка строго под кодом -->
-    <div class="note-box">
-        <div class="note-title" id="note-title-text">ℹ Примечание</div>
-        <p class="note-text" id="note-desc-text">Все параметры сессии будут автоматически скомпилированы и применены сразу после подтверждения.</p>
-    </div>
+        <!-- Информационная плашка -->
+        <div class="note-box">
+            <div class="note-title" id="note-title-text">ℹ Примечание</div>
+            <p class="note-text" id="note-desc-text">Все параметры сессии будут автоматически скомпилированы и применены сразу после подтверждения.</p>
+        </div>
 
-    <!-- Интерактивные секции -->
-    <div class="interactive-section">
-        <div class="section-label" id="lbl-goal-group">Цель протокола</div>
-        <div class="options-stack" id="goal-options">
-            <div class="doc-card selected" data-value="repeat_base" onclick="selectCard(this, 'goal-options')">
-                <div class="doc-radio"></div>
-                <div class="doc-card-content">
-                    <span class="doc-card-title" data-ru="База и указатели" data-en="Base & Pointers">База и указатели</span>
-                    <span class="doc-card-desc" data-ru="Синтаксис, память, ссылки" data-en="Syntax, memory, references">Синтаксис, память, ссылки</span>
+        <!-- Интерактивные секции -->
+        <div class="interactive-section">
+            <div class="section-label" id="lbl-goal-group">Цель протокола</div>
+            <div class="options-stack" id="goal-options">
+                <div class="doc-card selected" data-value="repeat_base" onclick="selectCard(this, 'goal-options')">
+                    <div class="doc-radio"></div>
+                    <div class="doc-card-content">
+                        <span class="doc-card-title" data-ru="База и указатели" data-en="Base & Pointers">База и указатели</span>
+                        <span class="doc-card-desc" data-ru="Синтаксис, память, ссылки" data-en="Syntax, memory, references">Синтаксис, память, ссылки</span>
+                    </div>
+                </div>
+                <div class="doc-card" data-value="deep_dive" onclick="selectCard(this, 'goal-options')">
+                    <div class="doc-radio"></div>
+                    <div class="doc-card-content">
+                        <span class="doc-card-title" data-ru="Хардкор и C++20" data-en="Hardcore & C++20">Хардкор и C++20</span>
+                        <span class="doc-card-desc" data-ru="Шаблоны, оптимизация, UB" data-en="Templates, optimization, UB">Шаблоны, оптимизация, UB</span>
+                    </div>
                 </div>
             </div>
-            <div class="doc-card" data-value="deep_dive" onclick="selectCard(this, 'goal-options')">
-                <div class="doc-radio"></div>
-                <div class="doc-card-content">
-                    <span class="doc-card-title" data-ru="Хардкор и C++20" data-en="Hardcore & C++20">Хардкор и C++20</span>
-                    <span class="doc-card-desc" data-ru="Шаблоны, оптимизация, UB" data-en="Templates, optimization, UB">Шаблоны, оптимизация, UB</span>
+        </div>
+
+        <div class="interactive-section">
+            <div class="section-label" id="lbl-level-group">Уровень доступа</div>
+            <div class="options-stack" id="level-options">
+                <div class="doc-card selected" data-value="beginner" onclick="selectCard(this, 'level-options')">
+                    <div class="doc-radio"></div>
+                    <div class="doc-card-content">
+                        <span class="doc-card-title" data-ru="Новичок" data-en="Beginner">Новичок</span>
+                        <span class="doc-card-desc" data-ru="Простые объяснения с нуля" data-en="Simple explanations from scratch">Простые объяснения с нуля</span>
+                    </div>
+                </div>
+                <div class="doc-card" data-value="expert" onclick="selectCard(this, 'level-options')">
+                    <div class="doc-radio"></div>
+                    <div class="doc-card-content">
+                        <span class="doc-card-title" data-ru="Профи" data-en="Expert">Профи</span>
+                        <span class="doc-card-desc" data-ru="Регистры, стеки, ассемблер" data-en="Registers, stacks, assembly">Регистры, стеки, ассемблер</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="interactive-section">
-        <div class="section-label" id="lbl-level-group">Уровень доступа</div>
-        <div class="options-stack" id="level-options">
-            <div class="doc-card selected" data-value="beginner" onclick="selectCard(this, 'level-options')">
-                <div class="doc-radio"></div>
-                <div class="doc-card-content">
-                    <span class="doc-card-title" data-ru="Новичок" data-en="Beginner">Новичок</span>
-                    <span class="doc-card-desc" data-ru="Простые объяснения с нуля" data-en="Simple explanations from scratch">Простые объяснения с нуля</span>
-                </div>
-            </div>
-            <div class="doc-card" data-value="expert" onclick="selectCard(this, 'level-options')">
-                <div class="doc-radio"></div>
-                <div class="doc-card-content">
-                    <span class="doc-card-title" data-ru="Профи" data-en="Expert">Профи</span>
-                    <span class="doc-card-desc" data-ru="Регистры, стеки, ассемблер" data-en="Registers, stacks, assembly">Регистры, стеки, ассемблер</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <!-- Кнопка вынесена в отдельный контейнер с привязкой вниз -->
     <div class="action-container">
         <button class="doc-btn" id="btn-submit" onclick="submitData()">./execute_session.sh</button>
     </div>
