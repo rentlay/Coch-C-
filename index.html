@@ -36,33 +36,29 @@
             min-height: 100vh;
         }
 
-        /* Header Fix */
+        /* Header Layout */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
             border-bottom: 1px solid var(--border);
             padding-bottom: 16px;
         }
 
-        .header-titles {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .header h2 {
+        .title-block h2 {
             font-size: 20px;
             font-weight: 700;
             letter-spacing: -0.3px;
+            margin-bottom: 8px; /* Жесткий отступ, исключающий наплыв */
         }
 
-        .header p {
+        .title-block .code-line {
             font-size: 12px;
             color: var(--accent);
             font-family: 'JetBrains Mono', monospace;
             font-weight: 500;
+            display: block;
         }
 
         /* Lang Switcher */
@@ -207,9 +203,9 @@
 <body>
 
     <div class="header">
-        <div class="header-titles">
+        <div class="title-block">
             <h2 id="ui-title">Конфигурация</h2>
-            <p>./init_session.sh --config</p>
+            <span class="code-line">./init_session.sh --config</span>
         </div>
         <div class="lang-switch">
             <button class="lang-btn active" onclick="setLang('ru', event)">RU</button>
