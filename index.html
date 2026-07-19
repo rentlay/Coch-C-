@@ -8,15 +8,16 @@
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
 
         :root {
-            --bg: #050508;
-            --surface: #0e1117;
-            --surface-hover: #161b22;
-            --border: #21262d;
-            --accent: #58a6ff;
-            --accent-glow: rgba(88, 166, 255, 0.15);
-            --text-main: #f0f6fc;
-            --text-muted: #8b949e;
-            --success: #3fb950;
+            --bg: #07090f;
+            --surface: #10141f;
+            --surface-active: #171f33;
+            --border: #1e263d;
+            --border-active: #3b82f6;
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.12);
+            --text-main: #f1f5f9;
+            --text-muted: #64748b;
+            --success: #22c55e;
         }
 
         * {
@@ -42,9 +43,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border);
+            margin-bottom: 16px;
             padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
         }
 
         .sys-status {
@@ -53,21 +54,15 @@
             gap: 8px;
             font-size: 11px;
             color: var(--text-muted);
+            letter-spacing: 0.5px;
         }
 
         .status-dot {
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             background: var(--success);
             border-radius: 50%;
             box-shadow: 0 0 8px var(--success);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.4; }
-            100% { opacity: 1; }
         }
 
         .lang-switch {
@@ -82,9 +77,9 @@
             background: transparent;
             border: none;
             color: var(--text-muted);
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
-            padding: 5px 10px;
+            padding: 6px 12px;
             cursor: pointer;
             transition: all 0.2s;
             font-family: 'JetBrains Mono', monospace;
@@ -92,36 +87,33 @@
 
         .lang-btn.active {
             background: var(--accent);
-            color: #000;
+            color: #fff;
         }
 
-        /* Terminal Console Feed (Immersive element) */
+        /* Terminal Console Feed */
         .terminal-feed {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 10px 12px;
+            padding: 12px 14px;
             font-size: 11px;
             color: var(--text-muted);
             margin-bottom: 20px;
-            height: 48px;
             display: flex;
             align-items: center;
-            overflow: hidden;
-            position: relative;
+            min-height: 44px;
         }
 
         .terminal-feed::before {
             content: '>';
             color: var(--accent);
-            margin-right: 8px;
+            margin-right: 10px;
             font-weight: bold;
         }
 
         #log-text {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            color: var(--text-main);
+            word-break: break-all;
         }
 
         /* Sections */
@@ -133,8 +125,9 @@
             font-size: 10px;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             margin-bottom: 8px;
+            font-weight: 700;
         }
 
         .options-grid {
@@ -147,8 +140,8 @@
         .card {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px 14px;
+            border-radius: 10px;
+            padding: 14px 16px;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
@@ -156,14 +149,14 @@
             justify-content: space-between;
         }
 
-        .card:hover {
-            border-color: var(--text-muted);
+        .card:active {
+            transform: scale(0.99);
         }
 
         .card-info {
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 4px;
         }
 
         .card-title {
@@ -177,34 +170,35 @@
             color: var(--text-muted);
         }
 
-        /* Custom Radio Switch */
+        /* Custom Radio */
         .radio-indicator {
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             border: 2px solid var(--border);
-            border-radius: 4px;
+            border-radius: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
+            flex-shrink: 0;
         }
 
         .card.selected {
-            border-color: var(--accent);
+            border-color: var(--accent-active);
             background: var(--accent-glow);
         }
 
         .card.selected .radio-indicator {
             border-color: var(--accent);
             background: var(--accent);
-            box-shadow: 0 0 8px var(--accent);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
         }
 
         .card.selected .radio-indicator::after {
             content: '';
             width: 6px;
             height: 6px;
-            background: #000;
+            background: #fff;
             border-radius: 1px;
         }
 
@@ -216,21 +210,21 @@
 
         .execute-btn {
             width: 100%;
-            padding: 14px;
+            padding: 15px;
             background: var(--accent);
-            color: #050508;
+            color: #fff;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 13px;
             font-weight: 700;
             cursor: pointer;
             font-family: 'JetBrains Mono', monospace;
-            box-shadow: 0 0 15px rgba(88, 166, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
             transition: all 0.2s;
         }
 
         .execute-btn:active {
-            transform: scale(0.98);
+            transform: scale(0.99);
             opacity: 0.9;
         }
     </style>
@@ -240,7 +234,7 @@
     <div class="top-bar">
         <div class="sys-status">
             <div class="status-dot"></div>
-            <span id="sys-title">SYSTEM_READY</span>
+            <span id="sys-title">СИСТЕМА ГОТОВА</span>
         </div>
         <div class="lang-switch">
             <button class="lang-btn active" onclick="setLang('ru')">RU</button>
@@ -248,22 +242,27 @@
         </div>
     </div>
 
-    <!-- Интерактивная строка логов, которая имитирует живую систему -->
     <div class="terminal-feed">
-        <span id="log-text">Initializing runtime environment...</span>
+        <span id="log-text">Инициализация среды разработки... Выберите параметры.</span>
     </div>
 
     <div class="section-group">
-        <div class="section-label" id="lbl-goal">Target Protocol</div>
+        <div class="section-label" id="lbl-goal">Цель протокола</div>
         <div class="options-grid" id="goal-options">
-            <div class="card selected" data-value="repeat_base" onclick="selectCard(this, 'goal-options', 'Loaded base pointer libraries.')">
+            <div class="card selected" data-value="repeat_base" 
+                 data-log-ru="Загружены библиотеки указателей и работы с памятью." 
+                 data-log-en="Loaded base pointer libraries and memory structures."
+                 onclick="selectCard(this, 'goal-options')">
                 <div class="card-info">
                     <span class="card-title" data-ru="База и указатели" data-en="Base & Pointers">База и указатели</span>
                     <span class="card-desc" data-ru="Синтаксис, память, ссылки" data-en="Syntax, memory, references">Синтаксис, память, ссылки</span>
                 </div>
                 <div class="radio-indicator"></div>
             </div>
-            <div class="card" data-value="deep_dive" onclick="selectCard(this, 'goal-options', 'Switched to advanced optimization standards.')">
+            <div class="card" data-value="deep_dive" 
+                 data-log-ru="Установлены стандарты оптимизации C++20/23." 
+                 data-log-en="Switched to advanced optimization standards C++20/23."
+                 onclick="selectCard(this, 'goal-options')">
                 <div class="card-info">
                     <span class="card-title" data-ru="Хардкор и C++20" data-en="Hardcore & C++20">Хардкор и C++20</span>
                     <span class="card-desc" data-ru="Шаблоны, оптимизация, UB" data-en="Templates, optimization, UB">Шаблоны, оптимизация, UB</span>
@@ -274,16 +273,22 @@
     </div>
 
     <div class="section-group">
-        <div class="section-label" id="lbl-level">Execution Level</div>
+        <div class="section-label" id="lbl-level">Уровень доступа</div>
         <div class="options-grid" id="level-options">
-            <div class="card selected" data-value="beginner" onclick="selectCard(this, 'level-options', 'User space mode: Enabled simple analogies.')">
+            <div class="card selected" data-value="beginner" 
+                 data-log-ru="Режим новичка: включены подробные аналогии." 
+                 data-log-en="Beginner mode: Enabled simple analogies."
+                 onclick="selectCard(this, 'level-options')">
                 <div class="card-info">
                     <span class="card-title" data-ru="Новичок" data-en="Beginner">Новичок</span>
                     <span class="card-desc" data-ru="Простые объяснения с нуля" data-en="Simple explanations from scratch">Простые объяснения с нуля</span>
                 </div>
                 <div class="radio-indicator"></div>
             </div>
-            <div class="card" data-value="expert" onclick="selectCard(this, 'level-options', 'Kernel dev mode: Assembly & stack tracking.')">
+            <div class="card" data-value="expert" 
+                 data-log-ru="Режим профи: низкоуровневый разбор и регистры." 
+                 data-log-en="Expert mode: Low-level breakdown and registers."
+                 onclick="selectCard(this, 'level-options')">
                 <div class="card-info">
                     <span class="card-title" data-ru="Профи" data-en="Expert">Профи</span>
                     <span class="card-desc" data-ru="Регистры, стеки, ассемблер" data-en="Registers, stacks, assembly">Регистры, стеки, ассемблер</span>
@@ -305,8 +310,18 @@
         let currentLang = 'ru';
 
         const i18n = {
-            ru: { sys: "СИСТЕМА ГОТОВА", goal: "Цель протокола", level: "Уровень доступа", btn: "./execute_session.sh" },
-            en: { sys: "SYSTEM_READY", goal: "Target Protocol", level: "Execution Level", btn: "./execute_session.sh" }
+            ru: { 
+                sys: "СИСТЕМА ГОТОВА", 
+                goal: "Цель протокола", 
+                level: "Уровень доступа", 
+                defaultLog: "Инициализация среды разработки... Выберите параметры." 
+            },
+            en: { 
+                sys: "SYSTEM READY", 
+                goal: "Target Protocol", 
+                level: "Execution Level", 
+                defaultLog: "Initializing runtime environment... Select parameters." 
+            }
         };
 
         function setLang(lang) {
@@ -317,23 +332,29 @@
             document.getElementById('sys-title').innerText = i18n[lang].sys;
             document.getElementById('lbl-goal').innerText = i18n[lang].goal;
             document.getElementById('lbl-level').innerText = i18n[lang].level;
-            document.getElementById('btn-submit').innerText = i18n[lang].btn;
 
+            // Обновляем тексты карточек
             document.querySelectorAll('.card').forEach(card => {
                 const t = card.querySelector('.card-title');
                 const d = card.querySelector('.card-desc');
                 t.innerText = t.getAttribute(`data-${lang}`);
                 d.innerText = d.getAttribute(`data-${lang}`);
             });
+
+            // Обновляем лог выбранной карточки на нужном языке
+            const selectedCard = document.querySelector('.card.selected');
+            if (selectedCard) {
+                document.getElementById('log-text').innerText = selectedCard.getAttribute(`data-log-${lang}`);
+            }
         }
 
-        function selectCard(card, containerId, logMessage) {
+        function selectCard(card, containerId) {
             const container = document.getElementById(containerId);
             container.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
             card.classList.add('selected');
             
-            // Живой отклик в консольном логе при клике
-            document.getElementById('log-text').innerText = logMessage;
+            // Выводим лог выбранной карточки на текущем языке
+            document.getElementById('log-text').innerText = card.getAttribute(`data-log-${currentLang}`);
         }
 
         function submitData() {
