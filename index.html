@@ -116,7 +116,7 @@
             background: var(--surface-code);
             border: 1px solid var(--border);
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             overflow: hidden;
         }
 
@@ -146,7 +146,32 @@
         .str { color: var(--code-string); }
         .fn { color: var(--code-func); }
 
-        /* Interactive Selectors disguised as Doc Callouts / Options */
+        /* Note Callout Block placed strictly between intro and options */
+        .note-box {
+            background: var(--note-bg);
+            border: 1px solid var(--note-border);
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-bottom: 20px;
+        }
+
+        .note-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--note-title);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .note-text {
+            font-size: 12px;
+            color: var(--text-main);
+            margin-bottom: 0;
+        }
+
+        /* Interactive Selectors */
         .interactive-section {
             margin-bottom: 20px;
         }
@@ -231,32 +256,7 @@
             color: var(--text-muted);
         }
 
-        /* Note Callout Block */
-        .note-box {
-            background: var(--note-bg);
-            border: 1px solid var(--note-border);
-            border-radius: 8px;
-            padding: 12px 14px;
-            margin-bottom: 20px;
-        }
-
-        .note-title {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--note-title);
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .note-text {
-            font-size: 12px;
-            color: var(--text-main);
-            margin-bottom: 0;
-        }
-
-        /* Submit Button formatted as documentation action */
+        /* Submit Button */
         .action-container {
             margin-top: auto;
             padding-top: 10px;
@@ -296,7 +296,7 @@
     <h1 id="main-heading">Настройка среды окружения</h1>
     <p id="main-desc">Конфигурация модульных тестов и параметров сборки должна быть прописана в корневом файле <code>tests/test_main.cpp</code>.</p>
 
-    <!-- Стилизованный блок кода -->
+    <!-- Кодовый блок -->
     <div class="code-block-container">
         <div class="code-block-header">
             <span id="code-filename">tests/config.cpp</span>
@@ -307,7 +307,13 @@
 }</code></pre>
     </div>
 
-    <!-- Интерактивные блоки выбора параметров, замаскированные под документацию -->
+    <!-- Информационная плашка строго под кодом -->
+    <div class="note-box">
+        <div class="note-title" id="note-title-text">ℹ Примечание</div>
+        <p class="note-text" id="note-desc-text">Все параметры сессии будут автоматически скомпилированы и применены сразу после подтверждения.</p>
+    </div>
+
+    <!-- Интерактивные секции -->
     <div class="interactive-section">
         <div class="section-label" id="lbl-goal-group">Цель протокола</div>
         <div class="options-stack" id="goal-options">
@@ -348,12 +354,6 @@
         </div>
     </div>
 
-    <!-- Информационная плашка в стиле документации -->
-    <div class="note-box">
-        <div class="note-title" id="note-title-text">ℹ Примечание</div>
-        <p class="note-text" id="note-desc-text">Все параметры сессии будут автоматически скомпилированы и применены сразу после подтверждения.</p>
-    </div>
-
     <div class="action-container">
         <button class="doc-btn" id="btn-submit" onclick="submitData()">./execute_session.sh</button>
     </div>
@@ -370,20 +370,20 @@
                 header: "docs.cpp-core.org / setup",
                 heading: "Настройка среды окружения",
                 desc: "Конфигурация модульных тестов и параметров сборки должна быть прописана в корневом файле <code>tests/test_main.cpp</code>.",
-                goalLbl: "Цель протокола",
-                levelLbl: "Уровень доступа",
                 noteTitle: "ℹ Примечание",
                 noteDesc: "Все параметры сессии будут автоматически скомпилированы и применены сразу после подтверждения.",
+                goalLbl: "Цель протокола",
+                levelLbl: "Уровень доступа",
                 btn: "./execute_session.sh"
             },
             en: {
                 header: "docs.cpp-core.org / setup",
                 heading: "Environment Configuration",
                 desc: "Module testing and build parameters must be specified in the root file <code>tests/test_main.cpp</code>.",
-                goalLbl: "Target Protocol",
-                levelLbl: "Execution Level",
                 noteTitle: "ℹ Note",
                 noteDesc: "All session parameters will be automatically compiled and applied immediately upon confirmation.",
+                goalLbl: "Target Protocol",
+                levelLbl: "Execution Level",
                 btn: "./execute_session.sh"
             }
         };
@@ -396,10 +396,10 @@
             document.getElementById('header-spec').innerText = i18n[lang].header;
             document.getElementById('main-heading').innerText = i18n[lang].heading;
             document.getElementById('main-desc').innerHTML = i18n[lang].desc;
-            document.getElementById('lbl-goal-group').innerText = i18n[lang].goalLbl;
-            document.getElementById('lbl-level-group').innerText = i18n[lang].levelLbl;
             document.getElementById('note-title-text').innerText = i18n[lang].noteTitle;
             document.getElementById('note-desc-text').innerText = i18n[lang].noteDesc;
+            document.getElementById('lbl-goal-group').innerText = i18n[lang].goalLbl;
+            document.getElementById('lbl-level-group').innerText = i18n[lang].levelLbl;
             document.getElementById('btn-submit').innerText = i18n[lang].btn;
 
             document.querySelectorAll('.doc-card').forEach(card => {
