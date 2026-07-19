@@ -3,9 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C++ Elite Mentor</title>
+    <title>C++ NullPtr Terminal v2</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+
+        :root {
+            --bg-gradient: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+            --card-bg: rgba(15, 23, 42, 0.6);
+            --border-color: rgba(56, 189, 248, 0.2);
+            --accent-color: #38bdf8;
+            --accent-glow: 0 0 20px rgba(56, 189, 248, 0.4);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --ease-custom: cubic-bezier(0.23, 1, 0.32, 1);
+        }
 
         * {
             box-sizing: border-box;
@@ -13,210 +24,283 @@
             padding: 0;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            outline: none;
         }
 
         body {
-            background-color: #07080a;
-            color: #e2e8f0;
+            background: var(--bg-gradient);
+            color: var(--text-primary);
             font-family: 'Inter', sans-serif;
-            padding: 24px 20px;
+            padding: 30px 20px;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            overflow-x: hidden;
         }
 
+        /* Header - Hacker style */
         .header {
-            margin-bottom: 28px;
+            margin-bottom: 40px;
+            border-left: 3px solid var(--accent-color);
+            padding-left: 15px;
         }
 
         .header h2 {
-            font-size: 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 26px;
             font-weight: 700;
             color: #ffffff;
-            letter-spacing: -0.5px;
-            margin-bottom: 6px;
+            letter-spacing: -1px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
         .header p {
-            font-size: 14px;
-            color: #64748b;
+            font-size: 13px;
+            color: var(--accent-color);
             font-family: 'JetBrains Mono', monospace;
+            margin-top: 4px;
+            opacity: 0.8;
         }
 
+        /* Group styling */
         .group {
-            margin-bottom: 24px;
+            margin-bottom: 32px;
         }
 
         .section-title {
             font-size: 11px;
             font-weight: 600;
-            color: #64748b;
-            margin-bottom: 12px;
+            color: var(--accent-color);
+            margin-bottom: 16px;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
+            letter-spacing: 2px;
             font-family: 'JetBrains Mono', monospace;
+            padding-left: 5px;
         }
 
+        /* Options Grid */
         .options {
             display: grid;
-            gap: 12px;
+            gap: 16px;
         }
         
+        /* Glassmorphism Cards */
         .option-card {
-            background: #111318;
-            border: 1px solid #1e2330;
-            padding: 16px 18px;
-            border-radius: 14px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            padding: 18px 20px;
+            border-radius: 16px;
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s var(--ease-custom);
+            position: relative;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
+        /* Card Hover Effect */
+        .option-card:hover {
+            border-color: rgba(56, 189, 248, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Card Active (Click) Effect */
         .option-card:active {
-            transform: scale(0.98);
+            transform: scale(0.97);
+            background: rgba(15, 23, 42, 0.9);
         }
 
         .option-info {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
+            z-index: 1;
         }
 
         .option-title {
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 600;
-            color: #cbd5e1;
+            color: var(--text-primary);
+            transition: color 0.3s;
         }
 
         .option-desc {
             font-size: 12px;
-            color: #64748b;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            transition: color 0.3s;
+            max-width: 90%;
         }
 
-        .radio-dot {
-            width: 20px;
-            height: 20px;
+        /* Neo Indicator (Replacing radio dot) */
+        .neo-indicator {
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
-            border: 2px solid #2a3245;
+            border: 2px solid #475569;
+            background: transparent;
+            transition: all 0.4s var(--ease-custom);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.25s;
+            z-index: 1;
         }
 
+        /* Selected State Styles */
         .option-card.selected {
-            border-color: #3b82f6;
-            background: rgba(59, 130, 246, 0.04);
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+            border-color: var(--accent-color);
+            box-shadow: var(--accent-glow);
         }
 
         .option-card.selected .option-title {
-            color: #ffffff;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
         }
 
-        .option-card.selected .radio-dot {
-            border-color: #3b82f6;
-            background: #3b82f6;
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        .option-card.selected .option-desc {
+            color: #e0f2fe;
         }
 
-        .option-card.selected .radio-dot::after {
+        .option-card.selected .neo-indicator {
+            border-color: var(--accent-color);
+            background: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        .option-card.selected .neo-indicator::after {
             content: '';
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             background: #ffffff;
             border-radius: 50%;
+            animation: pulse 2s infinite;
         }
-        
+
+        /* Pulsing animation for selected dot */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+        }
+
+        /* Background glow effect on hover (optional extra vibe) */
+        .option-card::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.06) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            z-index: 0;
+        }
+
+        .option-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Submit Button - Neumorphic/Glow */
         .btn-container {
             margin-top: auto;
-            padding-top: 20px;
+            padding-top: 30px;
+            padding-bottom: 10px;
         }
 
         .submit-btn {
             width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            border: none;
-            color: white;
-            border-radius: 14px;
+            padding: 20px;
+            background: #020617; /* Dark base for button */
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
             font-size: 16px;
-            font-weight: 600;
+            border-radius: 16px;
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
-            transition: all 0.2s;
+            transition: all 0.3s var(--ease-custom);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            background: var(--accent-color);
+            color: #020617;
+            box-shadow: var(--accent-glow);
         }
 
         .submit-btn:active {
-            transform: scale(0.99);
-            opacity: 0.9;
+            transform: translateY(1px) scale(0.99);
         }
+
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h2>Калибровка ИИ</h2>
-        <p>// system.init_config()</p>
+        <h2>C++ NullPtr Terminal</h2>
+        <p>// SYSTEM_BOOT.sh --config</p>
     </div>
 
     <div class="group">
-        <div class="section-title">Цель сессии</div>
+        <div class="section-title">Primary Directive</div>
         <div class="options" id="goal-options">
             <div class="option-card selected" data-value="repeat_base">
                 <div class="option-info">
-                    <span class="option-title">Повторение базы</span>
-                    <span class="option-desc">Закрепить синтаксис, указатели и структуры</span>
+                    <span class="option-title">INIT_SYNTAX_REV</span>
+                    <span class="option-desc">Закрепить основы: указатели, ссылки, память.</span>
                 </div>
-                <div class="radio-dot"></div>
+                <div class="neo-indicator"></div>
             </div>
             <div class="option-card" data-value="deep_dive">
                 <div class="option-info">
-                    <span class="option-title">Глубокий хардкор</span>
-                    <span class="option-desc">Память, оптимизация, стандарты C++20/23</span>
+                    <span class="option-title">EXEC_HARDCORE_MODE</span>
+                    <span class="option-desc">Глубоко в ассемблер, оптимизацию и C++20.</span>
                 </div>
-                <div class="radio-dot"></div>
+                <div class="neo-indicator"></div>
             </div>
         </div>
     </div>
 
     <div class="group">
-        <div class="section-title">Твой текущий уровень</div>
+        <div class="section-title">Kernel Level</div>
         <div class="options" id="level-options">
             <div class="option-card selected" data-value="beginner">
                 <div class="option-info">
-                    <span class="option-title">Полный ноль</span>
-                    <span class="option-desc">Объяснения на пальцах и аналогии</span>
+                    <span class="option-title">LEVEL_USER_SPACE</span>
+                    <span class="option-desc">Я новичок, мне нужны простые аналогии.</span>
                 </div>
-                <div class="radio-dot"></div>
+                <div class="neo-indicator"></div>
             </div>
             <div class="option-card" data-value="middle">
                 <div class="option-info">
-                    <span class="option-title">Средний</span>
-                    <span class="option-desc">Понимаю ООП, плаваю в указателях</span>
+                    <span class="option-title">LEVEL_KERNEL_DEV</span>
+                    <span class="option-desc">Средний уровень, пишу код, но путаюсь в стеке.</span>
                 </div>
-                <div class="radio-dot"></div>
+                <div class="neo-indicator"></div>
             </div>
             <div class="option-card" data-value="expert">
                 <div class="option-info">
-                    <span class="option-title">Продвинутый</span>
-                    <span class="option-desc">Пишу код, ищу утечки памяти сам</span>
+                    <span class="option-title">LEVEL_ROOT_ACCESS</span>
+                    <span class="option-desc">Профи, хочу про регистры и UB в стандарте.</span>
                 </div>
-                <div class="radio-dot"></div>
+                <div class="neo-indicator"></div>
             </div>
         </div>
     </div>
 
     <div class="btn-container">
-        <button class="submit-btn" onclick="submitData()">Запустить среду</button>
+        <button class="submit-btn" onclick="submitData()">Execute Environment</button>
     </div>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
+        tg.setHeaderColor('#0f172a'); // Цвет хедера телеги под стиль
 
         function setupSelector(containerId) {
             const container = document.getElementById(containerId);
