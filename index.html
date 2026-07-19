@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C++ Mentor v1</title>
+    <title>C++ Mentor</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
         :root {
-            --bg-color: #121214;
-            --card-bg: #1a1a1e;
-            --card-border: #2c2c33;
+            --bg: #09090b;
+            --surface: #18181b;
+            --surface-hover: #27272a;
+            --border: #27272a;
+            --border-active: #3b82f6;
             --accent: #3b82f6;
-            --text-main: #ffffff;
-            --text-muted: #8e8e93;
+            --text-main: #f4f4f5;
+            --text-muted: #71717a;
         }
 
         * {
@@ -25,34 +27,44 @@
         }
 
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg);
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
-            padding: 24px 20px;
+            padding: 24px 16px;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
 
-        /* Top Bar: Title & Lang Switcher */
-        .top-bar {
+        /* Header */
+        .header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 28px;
+            align-items: flex-end;
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
         }
 
-        h2 {
-            font-size: 22px;
+        .header h2 {
+            font-size: 24px;
             font-weight: 700;
-            letter-spacing: -0.4px;
+            letter-spacing: -0.5px;
         }
 
+        .header p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Lang Switcher */
         .lang-switch {
             display: flex;
-            background: var(--card-border);
-            border-radius: 8px;
-            padding: 2px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 3px;
         }
 
         .lang-btn {
@@ -61,52 +73,74 @@
             color: var(--text-muted);
             font-size: 12px;
             font-weight: 600;
-            padding: 6px 10px;
-            border-radius: 6px;
+            padding: 6px 12px;
+            border-radius: 7px;
             cursor: pointer;
             transition: all 0.2s;
         }
 
         .lang-btn.active {
-            background: var(--text-main);
-            color: var(--bg-color);
+            background: var(--accent);
+            color: #ffffff;
         }
 
         /* Sections */
         .group {
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         .section-title {
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 11px;
+            font-weight: 700;
             color: var(--text-muted);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 1px;
         }
 
         .options {
-            display: flex;
-            flex-direction: column;
+            display: grid;
             gap: 10px;
         }
 
         /* Cards */
         .option-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            padding: 16px;
-            border-radius: 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 16px 18px;
+            border-radius: 14px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
+        .option-card:hover {
+            border-color: var(--surface-hover);
+            background: #1c1c21;
+        }
+
         .option-card:active {
             transform: scale(0.98);
+        }
+
+        .option-content {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .option-icon {
+            font-size: 20px;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
         }
 
         .option-info {
@@ -122,16 +156,16 @@
         }
 
         .option-desc {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-muted);
         }
 
-        /* Radio Checkmark */
-        .checkmark {
+        /* Custom Checkbox */
+        .checkbox {
             width: 20px;
             height: 20px;
-            border-radius: 50%;
-            border: 2px solid var(--card-border);
+            border-radius: 6px;
+            border: 2px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -139,21 +173,25 @@
         }
 
         .option-card.selected {
-            border-color: var(--accent);
-            background: rgba(59, 130, 246, 0.05);
+            border-color: var(--border-active);
+            background: rgba(59, 130, 246, 0.06);
         }
 
-        .option-card.selected .checkmark {
+        .option-card.selected .checkbox {
             border-color: var(--accent);
             background: var(--accent);
         }
 
-        .option-card.selected .checkmark::after {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: #fff;
-            border-radius: 50%;
+        .option-card.selected .checkbox::after {
+            content: '✓';
+            color: #fff;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .option-card.selected .option-icon {
+            border-color: rgba(59, 130, 246, 0.3);
+            background: rgba(59, 130, 246, 0.1);
         }
 
         /* Button */
@@ -165,25 +203,30 @@
         .submit-btn {
             width: 100%;
             padding: 16px;
-            background: var(--text-main);
-            color: var(--bg-color);
+            background: var(--accent);
+            color: #ffffff;
             border: none;
-            border-radius: 12px;
-            font-size: 15px;
+            border-radius: 14px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: opacity 0.2s;
+            transition: opacity 0.2s, transform 0.1s;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
         }
 
         .submit-btn:active {
-            opacity: 0.8;
+            transform: scale(0.99);
+            opacity: 0.9;
         }
     </style>
 </head>
 <body>
 
-    <div class="top-bar">
-        <h2 id="ui-title">Настройка</h2>
+    <div class="header">
+        <div>
+            <h2 id="ui-title">Параметры</h2>
+            <p>Выбери формат обучения</p>
+        </div>
         <div class="lang-switch">
             <button class="lang-btn active" onclick="setLang('ru')">RU</button>
             <button class="lang-btn" onclick="setLang('en')">EN</button>
@@ -191,54 +234,69 @@
     </div>
 
     <div class="group">
-        <div class="section-title" id="lbl-goal">Цель обучения</div>
+        <div class="section-title" id="lbl-goal">Цель сессии</div>
         <div class="options" id="goal-options">
             <div class="option-card selected" data-value="repeat_base">
-                <div class="option-info">
-                    <span class="option-title" data-ru="Повторение базы" data-en="Review Basics">Повторение базы</span>
-                    <span class="option-desc" data-ru="Синтаксис, указатели, память" data-en="Syntax, pointers, memory">Синтаксис, указатели, память</span>
+                <div class="option-content">
+                    <div class="option-icon">🔄</div>
+                    <div class="option-info">
+                        <span class="option-title" data-ru="База и синтаксис" data-en="Basics & Syntax">База и синтаксис</span>
+                        <span class="option-desc" data-ru="Указатели, ссылки, память" data-en="Pointers, references, memory">Указатели, ссылки, память</span>
+                    </div>
                 </div>
-                <div class="checkmark"></div>
+                <div class="checkbox"></div>
             </div>
             <div class="option-card" data-value="deep_dive">
-                <div class="option-info">
-                    <span class="option-title" data-ru="Глубокое погружение" data-en="Deep Dive">Глубокое погружение</span>
-                    <span class="option-desc" data-ru="Оптимизация, стандарты C++20" data-en="Optimization, C++20 standards">Оптимизация, стандарты C++20</span>
+                <div class="option-content">
+                    <div class="option-icon">⚡</div>
+                    <div class="option-info">
+                        <span class="option-title" data-ru="Хардкор и стандарты" data-en="Hardcore & Standards">Хардкор и стандарты</span>
+                        <span class="option-desc" data-ru="Оптимизация, C++20/23" data-en="Optimization, C++20/23">Оптимизация, C++20/23</span>
+                    </div>
                 </div>
-                <div class="checkmark"></div>
+                <div class="checkbox"></div>
             </div>
         </div>
     </div>
 
     <div class="group">
-        <div class="section-title" id="lbl-level">Уровень знаний</div>
+        <div class="section-title" id="lbl-level">Твой уровень</div>
         <div class="options" id="level-options">
             <div class="option-card selected" data-value="beginner">
-                <div class="option-info">
-                    <span class="option-title" data-ru="Новичок" data-en="Beginner">Новичок</span>
-                    <span class="option-desc" data-ru="Объяснения с нуля" data-en="Explanations from scratch">Объяснения с нуля</span>
+                <div class="option-content">
+                    <div class="option-icon">🌱</div>
+                    <div class="option-info">
+                        <span class="option-title" data-ru="Новичок" data-en="Beginner">Новичок</span>
+                        <span class="option-desc" data-ru="Объяснения с нуля" data-en="Explanations from scratch">Объяснения с нуля</span>
+                    </div>
                 </div>
-                <div class="checkmark"></div>
+                <div class="checkbox"></div>
             </div>
             <div class="option-card" data-value="middle">
-                <div class="option-info">
-                    <span class="option-title" data-ru="Средний" data-en="Intermediate">Средний</span>
-                    <span class="option-desc" data-ru="Знаю ООП, плаваю в деталях" data-en="Know OOP, struggling with details">Знаю ООП, плаваю в деталях</span>
+                <div class="option-content">
+                    <div class="option-icon">💻</div>
+                    <div class="option-info">
+                        <span class="option-title" data-ru="Средний" data-en="Intermediate">Средний</span>
+                        <span class="option-desc" data-ru="Знаю ООП, путаюсь в деталях" data-en="Know OOP, struggling with details">Знаю ООП, путаюсь в деталях</span>
+                    </div>
                 </div>
-                <div class="checkmark"></div>
+                <div class="checkbox"></div>
             </div>
             <div class="option-card" data-value="expert">
-                <div class="option-info">
-                    <span class="option-title" data-ru="Профи" data-en="Expert">Профи</span>
-                    <span class="option-desc" data-ru="Низкоуровневые нюансы и UB" data-en="Low-level nuances and UB">Низкоуровневые нюансы и UB</span>
+                <div class="option-content">
+                    <div class="option-icon">🔥</div>
+                    <div class="option-info">
+                        <span class="option-title" data-ru="Профи" data-en="Expert">Профи</span>
+                        <span class="option-desc" data-ru="Низкий уровень и UB" data-en="Low-level and UB">Низкий уровень и UB</span>
+                    </div>
                 </div>
-                <div class="checkmark"></div>
+                <div class="checkbox"></div>
             </div>
         </div>
     </div>
 
     <div class="btn-container">
-        <button class="submit-btn" id="btn-submit" onclick="submitData()">Начать</button>
+        <button class="submit-btn" id="btn-submit" onclick="submitData()">Применить настройки</button>
     </div>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -249,8 +307,20 @@
         let currentLang = 'ru';
 
         const translations = {
-            ru: { title: "Настройка", goal: "Цель обучения", level: "Уровень знаний", submit: "Начать" },
-            en: { title: "Settings", goal: "Learning Goal", level: "Knowledge Level", submit: "Start" }
+            ru: { 
+                title: "Параметры", 
+                subtitle: "Выбери формат обучения",
+                goal: "Цель сессии", 
+                level: "Твой уровень", 
+                submit: "Применить настройки" 
+            },
+            en: { 
+                title: "Parameters", 
+                subtitle: "Choose learning format",
+                goal: "Session Goal", 
+                level: "Your Level", 
+                submit: "Apply Settings" 
+            }
         };
 
         function setLang(lang) {
