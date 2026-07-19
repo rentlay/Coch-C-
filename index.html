@@ -3,66 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C++ Core Terminal</title>
+    <title>C++ Core Documentation WebApp</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
 
         :root {
-            --bg: #07090f;
-            --surface: #10141f;
-            --surface-active: #171f33;
-            --border: #1e263d;
-            --border-active: #3b82f6;
+            --bg: #111318;
+            --surface: #181b22;
+            --surface-code: #161920;
+            --border: #2b313d;
+            --border-focus: #3b82f6;
             --accent: #3b82f6;
-            --accent-glow: rgba(59, 130, 246, 0.12);
-            --text-main: #f1f5f9;
-            --text-muted: #64748b;
-            --success: #22c55e;
+            --accent-bg: rgba(59, 130, 246, 0.1);
+            --text-main: #e2e8f0;
+            --text-muted: #8b949e;
+            --code-keyword: #ff7b72;
+            --code-string: #a5d6ff;
+            --code-func: #d2a8ff;
+            --note-bg: rgba(56, 139, 253, 0.08);
+            --note-border: #1f6feb;
+            --note-title: #58a6ff;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background-color: var(--bg);
             color: var(--text-main);
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Inter', sans-serif;
             padding: 16px;
+            line-height: 1.5;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
 
-        /* Top Bar */
-        .top-bar {
+        /* Top Header Navigation style */
+        .doc-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
             border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
         }
 
-        .sys-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 11px;
-            color: var(--text-muted);
-            letter-spacing: 0.5px;
-        }
-
-        .status-dot {
-            width: 7px;
-            height: 7px;
-            background: var(--success);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--success);
+        .doc-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+            letter-spacing: -0.2px;
         }
 
         .lang-switch {
@@ -78,11 +73,11 @@
             border: none;
             color: var(--text-muted);
             font-size: 11px;
-            font-weight: 700;
-            padding: 6px 12px;
+            font-weight: 600;
+            padding: 4px 10px;
             cursor: pointer;
-            transition: all 0.2s;
             font-family: 'JetBrains Mono', monospace;
+            transition: all 0.2s;
         }
 
         .lang-btn.active {
@@ -90,111 +85,127 @@
             color: #fff;
         }
 
-        /* Terminal Console Feed */
-        .terminal-feed {
+        /* Documentation Section Headers */
+        h1 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: -0.4px;
+        }
+
+        p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        /* Inline code snippets */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px 14px;
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            min-height: 44px;
-        }
-
-        .terminal-feed::before {
-            content: '>';
+            padding: 2px 6px;
+            border-radius: 4px;
             color: var(--accent);
-            margin-right: 10px;
-            font-weight: bold;
         }
 
-        #log-text {
+        /* Code Block Box */
+        .code-block-container {
+            background: var(--surface-code);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .code-block-header {
+            background: var(--surface);
+            padding: 8px 12px;
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        pre {
+            padding: 14px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            line-height: 1.5;
             color: var(--text-main);
-            word-break: break-all;
         }
 
-        /* Sections */
-        .section-group {
+        /* Syntax Highlight emulation */
+        .kw { color: var(--code-keyword); }
+        .str { color: var(--code-string); }
+        .fn { color: var(--code-func); }
+
+        /* Interactive Selectors disguised as Doc Callouts / Options */
+        .interactive-section {
             margin-bottom: 20px;
         }
 
         .section-label {
-            font-size: 10px;
-            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
             margin-bottom: 8px;
-            font-weight: 700;
         }
 
-        .options-grid {
+        .options-stack {
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
 
-        /* Cards */
-        .card {
+        .doc-card {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 14px 16px;
+            border-radius: 8px;
+            padding: 12px 14px;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
         }
 
-        .card:active {
+        .doc-card:active {
             transform: scale(0.99);
         }
 
-        .card-info {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .card-title {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        .card-desc {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        /* Custom Radio */
-        .radio-indicator {
-            width: 18px;
-            height: 18px;
+        .doc-radio {
+            width: 16px;
+            height: 16px;
             border: 2px solid var(--border);
-            border-radius: 5px;
+            border-radius: 4px;
+            margin-top: 2px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s;
             flex-shrink: 0;
+            transition: all 0.2s;
         }
 
-        .card.selected {
-            border-color: var(--accent-active);
-            background: var(--accent-glow);
+        .doc-card.selected {
+            border-color: var(--border-focus);
+            background: var(--accent-bg);
         }
 
-        .card.selected .radio-indicator {
+        .doc-card.selected .doc-radio {
             border-color: var(--accent);
             background: var(--accent);
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
         }
 
-        .card.selected .radio-indicator::after {
+        .doc-card.selected .doc-radio::after {
             content: '';
             width: 6px;
             height: 6px;
@@ -202,28 +213,71 @@
             border-radius: 1px;
         }
 
-        /* Action Button */
+        .doc-card-content {
+            display: grid;
+            grid-template-rows: auto auto;
+            row-gap: 4px;
+            width: 100%;
+        }
+
+        .doc-card-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .doc-card-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Note Callout Block */
+        .note-box {
+            background: var(--note-bg);
+            border: 1px solid var(--note-border);
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-bottom: 20px;
+        }
+
+        .note-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--note-title);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .note-text {
+            font-size: 12px;
+            color: var(--text-main);
+            margin-bottom: 0;
+        }
+
+        /* Submit Button formatted as documentation action */
         .action-container {
             margin-top: auto;
             padding-top: 10px;
         }
 
-        .execute-btn {
+        .doc-btn {
             width: 100%;
-            padding: 15px;
+            padding: 14px;
             background: var(--accent);
             color: #fff;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 13px;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
             font-family: 'JetBrains Mono', monospace;
-            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
             transition: all 0.2s;
         }
 
-        .execute-btn:active {
+        .doc-btn:active {
             transform: scale(0.99);
             opacity: 0.9;
         }
@@ -231,75 +285,77 @@
 </head>
 <body>
 
-    <div class="top-bar">
-        <div class="sys-status">
-            <div class="status-dot"></div>
-            <span id="sys-title">СИСТЕМА ГОТОВА</span>
-        </div>
+    <div class="doc-header">
+        <div class="doc-title" id="header-spec">docs.cpp-core.org / setup</div>
         <div class="lang-switch">
             <button class="lang-btn active" onclick="setLang('ru')">RU</button>
             <button class="lang-btn" onclick="setLang('en')">EN</button>
         </div>
     </div>
 
-    <div class="terminal-feed">
-        <span id="log-text">Инициализация среды разработки... Выберите параметры.</span>
+    <h1 id="main-heading">Настройка среды окружения</h1>
+    <p id="main-desc">Конфигурация модульных тестов и параметров сборки должна быть прописана в корневом файле <code>tests/test_main.cpp</code>.</p>
+
+    <!-- Стилизованный блок кода -->
+    <div class="code-block-container">
+        <div class="code-block-header">
+            <span id="code-filename">tests/config.cpp</span>
+            <span>C++20</span>
+        </div>
+        <pre><code><span class="kw">namespace</span> CoreConfig {
+    <span class="fn">SETUP_PROTOCOL</span>(<span class="str">"[System] Initialized"</span>);
+}</code></pre>
     </div>
 
-    <div class="section-group">
-        <div class="section-label" id="lbl-goal">Цель протокола</div>
-        <div class="options-grid" id="goal-options">
-            <div class="card selected" data-value="repeat_base" 
-                 data-log-ru="Загружены библиотеки указателей и работы с памятью." 
-                 data-log-en="Loaded base pointer libraries and memory structures."
-                 onclick="selectCard(this, 'goal-options')">
-                <div class="card-info">
-                    <span class="card-title" data-ru="База и указатели" data-en="Base & Pointers">База и указатели</span>
-                    <span class="card-desc" data-ru="Синтаксис, память, ссылки" data-en="Syntax, memory, references">Синтаксис, память, ссылки</span>
+    <!-- Интерактивные блоки выбора параметров, замаскированные под документацию -->
+    <div class="interactive-section">
+        <div class="section-label" id="lbl-goal-group">Цель протокола</div>
+        <div class="options-stack" id="goal-options">
+            <div class="doc-card selected" data-value="repeat_base" onclick="selectCard(this, 'goal-options')">
+                <div class="doc-radio"></div>
+                <div class="doc-card-content">
+                    <span class="doc-card-title" data-ru="База и указатели" data-en="Base & Pointers">База и указатели</span>
+                    <span class="doc-card-desc" data-ru="Синтаксис, память, ссылки" data-en="Syntax, memory, references">Синтаксис, память, ссылки</span>
                 </div>
-                <div class="radio-indicator"></div>
             </div>
-            <div class="card" data-value="deep_dive" 
-                 data-log-ru="Установлены стандарты оптимизации C++20/23." 
-                 data-log-en="Switched to advanced optimization standards C++20/23."
-                 onclick="selectCard(this, 'goal-options')">
-                <div class="card-info">
-                    <span class="card-title" data-ru="Хардкор и C++20" data-en="Hardcore & C++20">Хардкор и C++20</span>
-                    <span class="card-desc" data-ru="Шаблоны, оптимизация, UB" data-en="Templates, optimization, UB">Шаблоны, оптимизация, UB</span>
+            <div class="doc-card" data-value="deep_dive" onclick="selectCard(this, 'goal-options')">
+                <div class="doc-radio"></div>
+                <div class="doc-card-content">
+                    <span class="doc-card-title" data-ru="Хардкор и C++20" data-en="Hardcore & C++20">Хардкор и C++20</span>
+                    <span class="doc-card-desc" data-ru="Шаблоны, оптимизация, UB" data-en="Templates, optimization, UB">Шаблоны, оптимизация, UB</span>
                 </div>
-                <div class="radio-indicator"></div>
             </div>
         </div>
     </div>
 
-    <div class="section-group">
-        <div class="section-label" id="lbl-level">Уровень доступа</div>
-        <div class="options-grid" id="level-options">
-            <div class="card selected" data-value="beginner" 
-                 data-log-ru="Режим новичка: включены подробные аналогии." 
-                 data-log-en="Beginner mode: Enabled simple analogies."
-                 onclick="selectCard(this, 'level-options')">
-                <div class="card-info">
-                    <span class="card-title" data-ru="Новичок" data-en="Beginner">Новичок</span>
-                    <span class="card-desc" data-ru="Простые объяснения с нуля" data-en="Simple explanations from scratch">Простые объяснения с нуля</span>
+    <div class="interactive-section">
+        <div class="section-label" id="lbl-level-group">Уровень доступа</div>
+        <div class="options-stack" id="level-options">
+            <div class="doc-card selected" data-value="beginner" onclick="selectCard(this, 'level-options')">
+                <div class="doc-radio"></div>
+                <div class="doc-card-content">
+                    <span class="doc-card-title" data-ru="Новичок" data-en="Beginner">Новичок</span>
+                    <span class="doc-card-desc" data-ru="Простые объяснения с нуля" data-en="Simple explanations from scratch">Простые объяснения с нуля</span>
                 </div>
-                <div class="radio-indicator"></div>
             </div>
-            <div class="card" data-value="expert" 
-                 data-log-ru="Режим профи: низкоуровневый разбор и регистры." 
-                 data-log-en="Expert mode: Low-level breakdown and registers."
-                 onclick="selectCard(this, 'level-options')">
-                <div class="card-info">
-                    <span class="card-title" data-ru="Профи" data-en="Expert">Профи</span>
-                    <span class="card-desc" data-ru="Регистры, стеки, ассемблер" data-en="Registers, stacks, assembly">Регистры, стеки, ассемблер</span>
+            <div class="doc-card" data-value="expert" onclick="selectCard(this, 'level-options')">
+                <div class="doc-radio"></div>
+                <div class="doc-card-content">
+                    <span class="doc-card-title" data-ru="Профи" data-en="Expert">Профи</span>
+                    <span class="doc-card-desc" data-ru="Регистры, стеки, ассемблер" data-en="Registers, stacks, assembly">Регистры, стеки, ассемблер</span>
                 </div>
-                <div class="radio-indicator"></div>
             </div>
         </div>
+    </div>
+
+    <!-- Информационная плашка в стиле документации -->
+    <div class="note-box">
+        <div class="note-title" id="note-title-text">ℹ Примечание</div>
+        <p class="note-text" id="note-desc-text">Все параметры сессии будут автоматически скомпилированы и применены сразу после подтверждения.</p>
     </div>
 
     <div class="action-container">
-        <button class="execute-btn" id="btn-submit" onclick="submitData()">./execute_session.sh</button>
+        <button class="doc-btn" id="btn-submit" onclick="submitData()">./execute_session.sh</button>
     </div>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -310,17 +366,25 @@
         let currentLang = 'ru';
 
         const i18n = {
-            ru: { 
-                sys: "СИСТЕМА ГОТОВА", 
-                goal: "Цель протокола", 
-                level: "Уровень доступа", 
-                defaultLog: "Инициализация среды разработки... Выберите параметры." 
+            ru: {
+                header: "docs.cpp-core.org / setup",
+                heading: "Настройка среды окружения",
+                desc: "Конфигурация модульных тестов и параметров сборки должна быть прописана в корневом файле <code>tests/test_main.cpp</code>.",
+                goalLbl: "Цель протокола",
+                levelLbl: "Уровень доступа",
+                noteTitle: "ℹ Примечание",
+                noteDesc: "Все параметры сессии будут автоматически скомпилированы и применены сразу после подтверждения.",
+                btn: "./execute_session.sh"
             },
-            en: { 
-                sys: "SYSTEM READY", 
-                goal: "Target Protocol", 
-                level: "Execution Level", 
-                defaultLog: "Initializing runtime environment... Select parameters." 
+            en: {
+                header: "docs.cpp-core.org / setup",
+                heading: "Environment Configuration",
+                desc: "Module testing and build parameters must be specified in the root file <code>tests/test_main.cpp</code>.",
+                goalLbl: "Target Protocol",
+                levelLbl: "Execution Level",
+                noteTitle: "ℹ Note",
+                noteDesc: "All session parameters will be automatically compiled and applied immediately upon confirmation.",
+                btn: "./execute_session.sh"
             }
         };
 
@@ -329,32 +393,27 @@
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
 
-            document.getElementById('sys-title').innerText = i18n[lang].sys;
-            document.getElementById('lbl-goal').innerText = i18n[lang].goal;
-            document.getElementById('lbl-level').innerText = i18n[lang].level;
+            document.getElementById('header-spec').innerText = i18n[lang].header;
+            document.getElementById('main-heading').innerText = i18n[lang].heading;
+            document.getElementById('main-desc').innerHTML = i18n[lang].desc;
+            document.getElementById('lbl-goal-group').innerText = i18n[lang].goalLbl;
+            document.getElementById('lbl-level-group').innerText = i18n[lang].levelLbl;
+            document.getElementById('note-title-text').innerText = i18n[lang].noteTitle;
+            document.getElementById('note-desc-text').innerText = i18n[lang].noteDesc;
+            document.getElementById('btn-submit').innerText = i18n[lang].btn;
 
-            // Обновляем тексты карточек
-            document.querySelectorAll('.card').forEach(card => {
-                const t = card.querySelector('.card-title');
-                const d = card.querySelector('.card-desc');
+            document.querySelectorAll('.doc-card').forEach(card => {
+                const t = card.querySelector('.doc-card-title');
+                const d = card.querySelector('.doc-card-desc');
                 t.innerText = t.getAttribute(`data-${lang}`);
                 d.innerText = d.getAttribute(`data-${lang}`);
             });
-
-            // Обновляем лог выбранной карточки на нужном языке
-            const selectedCard = document.querySelector('.card.selected');
-            if (selectedCard) {
-                document.getElementById('log-text').innerText = selectedCard.getAttribute(`data-log-${lang}`);
-            }
         }
 
         function selectCard(card, containerId) {
             const container = document.getElementById(containerId);
-            container.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+            container.querySelectorAll('.doc-card').forEach(c => c.classList.remove('selected'));
             card.classList.add('selected');
-            
-            // Выводим лог выбранной карточки на текущем языке
-            document.getElementById('log-text').innerText = card.getAttribute(`data-log-${currentLang}`);
         }
 
         function submitData() {
