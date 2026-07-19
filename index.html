@@ -3,71 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C++ Mentor</title>
+    <title>C++ Elite Mentor</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: #0f1115; color: #f3f4f6; padding: 20px; display: flex; flex-direction: column; min-height: 100vh; }
-        h2 { font-size: 22px; margin-bottom: 20px; font-weight: 600; color: #ffffff; }
-        .section-title { font-size: 14px; color: #9ca3af; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .group { margin-bottom: 24px; }
-        .options { display: flex; flex-direction: column; gap: 10px; }
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #07080a;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            padding: 24px 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            margin-bottom: 28px;
+        }
+
+        .header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #64748b;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .group {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .options {
+            display: grid;
+            gap: 12px;
+        }
         
         .option-card {
-            background: #1a1d24;
-            border: 2px solid #262a35;
-            padding: 16px;
-            border-radius: 12px;
+            background: #111318;
+            border: 1px solid #1e2330;
+            padding: 16px 18px;
+            border-radius: 14px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 16px;
-            font-weight: 500;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        .option-card:active { transform: scale(0.98); }
+
+        .option-card:active {
+            transform: scale(0.98);
+        }
+
+        .option-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .option-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+
+        .option-desc {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .radio-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #2a3245;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s;
+        }
+
         .option-card.selected {
             border-color: #3b82f6;
-            background: rgba(59, 130, 246, 0.1);
+            background: rgba(59, 130, 246, 0.04);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+        }
+
+        .option-card.selected .option-title {
             color: #ffffff;
         }
+
+        .option-card.selected .radio-dot {
+            border-color: #3b82f6;
+            background: #3b82f6;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+
+        .option-card.selected .radio-dot::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #ffffff;
+            border-radius: 50%;
+        }
         
-        .btn-container { margin-top: auto; padding-top: 20px; }
+        .btn-container {
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
         .submit-btn {
             width: 100%;
-            padding: 16px;
-            background: #3b82f6;
+            padding: 18px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             border: none;
             color: white;
-            border-radius: 12px;
+            border-radius: 14px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+            transition: all 0.2s;
         }
-        .submit-btn:active { background: #2563eb; }
+
+        .submit-btn:active {
+            transform: scale(0.99);
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body>
 
-    <h2>Настройка обучения</h2>
+    <div class="header">
+        <h2>Калибровка ИИ</h2>
+        <p>// system.init_config()</p>
+    </div>
 
     <div class="group">
-        <div class="section-title">Цель</div>
+        <div class="section-title">Цель сессии</div>
         <div class="options" id="goal-options">
-            <div class="option-card selected" data-value="repeat_base">🔄 Повторение базы</div>
-            <div class="option-card" data-value="deep_dive">⚡ Глубокое изучение и детали</div>
+            <div class="option-card selected" data-value="repeat_base">
+                <div class="option-info">
+                    <span class="option-title">Повторение базы</span>
+                    <span class="option-desc">Закрепить синтаксис, указатели и структуры</span>
+                </div>
+                <div class="radio-dot"></div>
+            </div>
+            <div class="option-card" data-value="deep_dive">
+                <div class="option-info">
+                    <span class="option-title">Глубокий хардкор</span>
+                    <span class="option-desc">Память, оптимизация, стандарты C++20/23</span>
+                </div>
+                <div class="radio-dot"></div>
+            </div>
         </div>
     </div>
 
     <div class="group">
-        <div class="section-title">Твой уровень</div>
+        <div class="section-title">Твой текущий уровень</div>
         <div class="options" id="level-options">
-            <div class="option-card selected" data-value="beginner">🌱 Полный ноль</div>
-            <div class="option-card" data-value="middle">⚖️ Средние знания</div>
-            <div class="option-card" data-value="expert">🔥 Высокие (профи)</div>
+            <div class="option-card selected" data-value="beginner">
+                <div class="option-info">
+                    <span class="option-title">Полный ноль</span>
+                    <span class="option-desc">Объяснения на пальцах и аналогии</span>
+                </div>
+                <div class="radio-dot"></div>
+            </div>
+            <div class="option-card" data-value="middle">
+                <div class="option-info">
+                    <span class="option-title">Средний</span>
+                    <span class="option-desc">Понимаю ООП, плаваю в указателях</span>
+                </div>
+                <div class="radio-dot"></div>
+            </div>
+            <div class="option-card" data-value="expert">
+                <div class="option-info">
+                    <span class="option-title">Продвинутый</span>
+                    <span class="option-desc">Пишу код, ищу утечки памяти сам</span>
+                </div>
+                <div class="radio-dot"></div>
+            </div>
         </div>
     </div>
 
     <div class="btn-container">
-        <button class="submit-btn" onclick="submitData()">Начать тренировку</button>
+        <button class="submit-btn" onclick="submitData()">Запустить среду</button>
     </div>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -75,7 +218,6 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Логика выбора карточек
         function setupSelector(containerId) {
             const container = document.getElementById(containerId);
             container.querySelectorAll('.option-card').forEach(card => {
